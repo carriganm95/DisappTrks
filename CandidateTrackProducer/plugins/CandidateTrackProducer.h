@@ -34,9 +34,6 @@
 #include "DataFormats/HcalRecHit/interface/HcalRecHitCollections.h"
 #include "DataFormats/Common/interface/ValueMap.h"
 
-#include "MagneticField/Engine/interface/MagneticField.h"
-#include "MagneticField/Records/interface/IdealMagneticFieldRecord.h"
-
 using namespace std;
 
 //
@@ -60,19 +57,35 @@ class CandidateTrackProducer : public edm::EDFilter {
 
 
       // ----------member data ---------------------------
-      edm::InputTag tracksTag_;
+      
+      //miniAOD
+      edm::InputTag pfCandidatesTag_;
+      edm::InputTag lostTracksTag_;
+      edm::InputTag isolatedTracksTag_;
+      //
+      //AOD tracks tag
+      //edm::InputTag tracksTag_;
+      //
+      //In miniAOD keep
       edm::InputTag rhoTag_;
       edm::InputTag rhoCaloTag_;
       edm::InputTag rhoCentralCaloTag_;
+
+      //Inputs from skim
       edm::InputTag EBRecHitsTag_;
       edm::InputTag EERecHitsTag_;
       edm::InputTag HBHERecHitsTag_;
-      edm::InputTag gt2dedxPixelTag_;
-      edm::InputTag gt2dedxStripTag_;
+
+      
+      //edm::InputTag gt2dedxPixelTag_;
+      //edm::InputTag gt2dedxStripTag_;
       double candMinPt_;
       bool use_dEdx_;
 
-      edm::EDGetTokenT<vector<reco::Track> >       tracksToken_;
+      //edm::EDGetTokenT<vector<reco::Track> >       tracksToken_;
+      edm::EDGetTokenT<pat::IsolatedTrack>         isolatedTracksToken_;
+      edm::EDGetTokenT<pat::PackedCandidateCollection>   lostTracksToken_;
+      edm::EDGetTokenT<pat::PackedCandidateCollection>   pfCandidates_;
       edm::EDGetTokenT<double>                     rhoToken_;
       edm::EDGetTokenT<double>                     rhoCaloToken_;
       edm::EDGetTokenT<double>                     rhoCentralCaloToken_;
@@ -81,8 +94,6 @@ class CandidateTrackProducer : public edm::EDFilter {
       edm::EDGetTokenT<HBHERecHitCollection>       HBHERecHitsToken_;
       edm::EDGetTokenT<edm::ValueMap<reco::DeDxData> > gt2dedxStripToken_;
       edm::EDGetTokenT<edm::ValueMap<reco::DeDxData> > gt2dedxPixelToken_;
-      edm::ESGetToken<MagneticField, IdealMagneticFieldRecord> magFieldToken_;
-      edm::ESGetToken<CaloGeometry, CaloGeometryRecord> caloGeometryToken_;
 
       edm::ESHandle<CaloGeometry> caloGeometry_;
       bool insideCone(const CandidateTrack &, const DetId &, const double) const;

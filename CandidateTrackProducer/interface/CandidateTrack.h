@@ -1,7 +1,8 @@
 #ifndef CANDIDATETRACK_H
 #define CANDIDATETRACK_H
 
-#include "DataFormats/TrackReco/interface/Track.h"
+//#include "DataFormats/TrackReco/interface/Track.h"
+#include "DataFormats/PatCandidates/interface/IsolatedTrack.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
 
 // FIXME:  Once OSUT3Analysis works with ROOT6, i.e., releases > CMSSW_7_4_5_ROOT5,
@@ -13,12 +14,12 @@
 
 using namespace std;
 
-class CandidateTrack : public reco::Track
+class CandidateTrack : public pat::IsolatedTrack
 {
   public:
     CandidateTrack ();
-    CandidateTrack (const reco::Track &);
-    CandidateTrack (const reco::Track &, const vector<reco::Track> &);
+    CandidateTrack (const pat::IsolatedTrack &);
+    CandidateTrack (const pat::IsolatedTrack &, const vector<pat::IsolatedTrack> &);
     ~CandidateTrack ();
 
     enum RhoType { All, Calo, CentralCalo };
@@ -282,8 +283,8 @@ class CandidateTrack : public reco::Track
     int dEdx_numberOfSaturatedMeasurements_strip_;
     unsigned int dEdx_numberOfMeasurements_strip_;
 
-    const double getTrackIsolation (const reco::Track &, const vector<reco::Track> &, const bool, const bool, const double, const double = 1.0e-12) const;
-    const double getOldTrackIsolation (const reco::Track &, const vector<reco::Track> &, const bool, const double, const double = 1.0e-12) const;
+    const double getTrackIsolation (const pat::IsolatedTrack &, const vector<pat::IsolatedTrack> &, const bool, const bool, const double, const double = 1.0e-12) const;
+    const double getOldTrackIsolation (const pat::IsolatedTrack &, const vector<pat::IsolatedTrack> &, const bool, const double, const double = 1.0e-12) const;
 
     const double caloTotNoPU (double, RhoType = All, CaloType = Sum) const;
 };
